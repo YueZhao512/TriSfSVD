@@ -5,3 +5,5 @@
 *.Rcheck
 *.tar.gz
 *.pdf
+!documents/
+!documents/*.pdf
