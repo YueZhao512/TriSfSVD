@@ -17,7 +17,7 @@ Install the development version from GitHub:
 
 ```r
 install.packages("remotes")
-remotes::install_github("zhao0646/TriSfSVD")
+remotes::install_github("YueZhao512/TriSfSVD")
 ```
 
 Or install from a local source checkout:
