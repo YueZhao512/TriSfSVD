@@ -1,0 +1,8 @@
+^\.DS_Store$
+^\.git$
+^\.gitignore$
+^\.Rhistory$
+^.*\.Rproj$
+^\.Rproj\.user$
+^TriSfSVD\.Rcheck$
+^TriSfSVD_.*\.tar\.gz$

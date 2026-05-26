@@ -1,0 +1,26 @@
+Package: TriSfSVD
+Type: Package
+Title: Functional SVD Based Tri-Clustering
+Version: 0.1.0
+Authors@R: c(
+    person(given = "Yue", family = "Zhao", email = "zhao0646@umn.edu", role = c("aut", "cre")),
+    person(given = "Thierry", family = "Chekouo", email = "tchekouo@umn.edu", role = "aut"),
+    person(given = "Sandra", family = "Safo", email = "ssafo@umn.edu", role = "aut")
+    )
+Author: Yue Zhao [aut, cre],
+    Thierry Chekouo [aut],
+    Sandra Safo [aut]
+Maintainer: Yue Zhao <zhao0646@umn.edu>
+Description: Implements sparse functional singular value decomposition methods for data-driven identification of biclustering and triclustering structures in high-dimensional sparse multivariate functional data. Provides functions for estimating sparse functional components, identifying sample clusters, variable clusters, and time-domain subregions, and reconstructing interpretable sample-feature-time patterns.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends:
+    R (>= 4.1.0)
+Imports:
+    energy,
+    irlba,
+    Matrix,
+    parallel,
+    softImpute,
+    stats,
+    utils

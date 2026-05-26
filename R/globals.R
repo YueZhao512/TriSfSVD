@@ -1,0 +1,12 @@
+utils::globalVariables(c(
+  "backtracking_global",
+  "eps_global",
+  "extend_weight_domain_global",
+  "extend_weight_smooth_global",
+  "L_init_global",
+  "max_iter_global",
+  "Omega_global",
+  "tau_global",
+  "u_global",
+  "use_sgl_global"
+))
