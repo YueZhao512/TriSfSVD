@@ -1959,6 +1959,7 @@ compute_s_masked <- function(X, u, varphi_list, index, ridge = 0, j_var = NULL) 
 
 
 update_u_with_gamma_tuning <- function(y_list, varphi_list_step1,w1,c_val,gamma_candidates,eps_zero = 1e-14,verbose,u_index,cl,extend_weight_u,varphi_list,Sobj){
+  c_val <- 0
   # 1) Compute total sample size n_total
   n_total <- 0
   for (i in seq_along(y_list)) {
