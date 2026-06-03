@@ -322,14 +322,6 @@ bicluster_fsvd <- function(X,d_view, gamma_candidates, alpha_candidates, theta_c
   gamma_bic_result = alpha_bic_result = lambda_bic_result = theta_bic_result = list()
   
   for (outer_iter in seq_len(max_outer_iter)) {
-    c_val <- 0
-    for (j in seq_len(p)) {
-      ####new add####
-      # c_val <- c_val + alpha_vec[j] * as.numeric(t(varphi_list[[j]]) %*% Omega %*% varphi_list[[j]])
-      if (length(varphi_list[[j]]) > 1) {
-        c_val <- c_val + alpha_vec[j] * as.numeric(t(varphi_list[[j]]) %*% Omega %*% varphi_list[[j]])
-      }
-    }
     old_u <- u
     old_varphi_list <- varphi_list
     varphi_list_step1 = lapply(index, function(index_set) {
@@ -346,7 +338,6 @@ bicluster_fsvd <- function(X,d_view, gamma_candidates, alpha_candidates, theta_c
       y_list = y_list,
       varphi_list_step1 = varphi_list_step1,
       w1 = w1,
-      c_val = c_val,
       gamma_candidates = gamma_candidates,
       eps_zero = 1e-14,
       verbose = verbose,
@@ -1958,8 +1949,7 @@ compute_s_masked <- function(X, u, varphi_list, index, ridge = 0, j_var = NULL) 
 }
 
 
-update_u_with_gamma_tuning <- function(y_list, varphi_list_step1,w1,c_val,gamma_candidates,eps_zero = 1e-14,verbose,u_index,cl,extend_weight_u,varphi_list,Sobj){
-  c_val <- 0
+update_u_with_gamma_tuning <- function(y_list, varphi_list_step1,w1,gamma_candidates,eps_zero = 1e-14,verbose,u_index,cl,extend_weight_u,varphi_list,Sobj){
   # 1) Compute total sample size n_total
   n_total <- 0
   for (i in seq_along(y_list)) {
@@ -1977,9 +1967,9 @@ update_u_with_gamma_tuning <- function(y_list, varphi_list_step1,w1,c_val,gamma_
     count = count + 1
     # (a) Solve for u with the given gamma
     if (is.null(cl)) {
-      u_test <- solve_u(y_list, varphi_list_step1, gamma_val, w1, c_val, u_index)
+      u_test <- solve_u(y_list, varphi_list_step1, gamma_val, w1, 0, u_index)
     } else {
-      u_test <- solve_u_parallel(y_list, varphi_list_step1, gamma_val, w1, c_val, u_index, cl)
+      u_test <- solve_u_parallel(y_list, varphi_list_step1, gamma_val, w1, 0, u_index, cl)
     }
     # (b) Normalize u_test
     norm_utest <- sqrt(sum(u_test^2))
@@ -1988,16 +1978,7 @@ update_u_with_gamma_tuning <- function(y_list, varphi_list_step1,w1,c_val,gamma_
     }
     
     # (c) Compute df with the formula:
-    df_test <- 0
-    for (i in seq_along(u_test)) {
-      if (abs(u_test[i]) > eps_zero) {
-        varphi_i_temp <- varphi_list_step1[[i]]
-        norm_varphi_i_sq <- sum(varphi_i_temp^2)
-        df_test_i <- norm_varphi_i_sq / (norm_varphi_i_sq + c_val)
-        # df_test_i <- norm_varphi_i_sq / (norm_varphi_i_sq)
-        df_test <- df_test + df_test_i
-      }
-    }
+    df_test <- sum(abs(u_test) > eps_zero)
     
     # s = compute_s_masked(X, u_test, varphi_list, index)
     s <- compute_s_fast(Sobj, u_test, varphi_list)
